@@ -1,4 +1,13 @@
 	<div class="row" style="padding : 10px;" ng-controller="AnalysisController">
+	<div class="col-md-12 col-xs-12">
+					<div class="x_panel custom_box_shadow">
+						<div class="x_content">
+							<div class="row">
+								<canvas id="mybarChart3"></canvas>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="x_panel custom_box_shadow">
 					<div class="x_title">
 						<h2>Daily Sleep Analysis <small>in hrs</small></h2>
@@ -40,7 +49,16 @@
 							</div>
 						</div>
 					</div>
-				</div>				
+				</div>
+				<!-- <div class="col-md-12 col-xs-12">
+					<div class="x_panel custom_box_shadow">
+						<div class="x_content">
+							<div class="row">
+								<canvas id="mybarChart3"></canvas>
+							</div>
+						</div>
+					</div>
+				</div>	 -->		
 			</div>				
 		</div>
 <script>
@@ -63,12 +81,13 @@
 		var ctx1 = document.getElementById("mybarChart1").getContext('2d');
 		var ctx2 = document.getElementById("mybarChart2").getContext('2d');
 		var mybarChart = new Chart(ctx, {
-		type: 'bar',
+		type: 'line',
+
 		data: {
 		  labels:label_name,
 		  datasets: [{
 			label: '# of hours',
-			backgroundColor: "#16a085",
+			// backgroundColor: "#16a085",
 			data:data_name
 		  }]
 		},
@@ -129,6 +148,7 @@
 	var ctx = document.getElementById("mybarChart").getContext('2d');
 	var ctx1 = document.getElementById("mybarChart1").getContext('2d');
 	var ctx2 = document.getElementById("mybarChart2").getContext('2d');
+	var ctx3 = document.getElementById("mybarChart3").getContext('2d');
 	var mybarChart = new Chart(ctx, {
 	type: 'bar',
 	data: {
@@ -194,4 +214,27 @@
 	  }
 	}
 });
+
+var mybarChart3 = new Chart(ctx3, {
+	type: 'bar',
+	data: {
+	  labels:[],
+	  datasets: [{
+		label: '# of hours',
+		backgroundColor: "#16a085",
+		data: []
+	  }]
+	},
+
+	options: {
+	  scales: {
+		yAxes: [{
+		  ticks: {
+			beginAtZero: true
+		  }
+		}]
+	  }
+	}
+});
+
 </script>
