@@ -457,8 +457,11 @@ mainApp.controller("appController", function($scope, $http, $filter) {
             var div = angular.element(document.querySelector('#sunsetDiv'));
             div.attr("style","background-image: url('../images/sunset2.jpg');")
         }
-        else if(dt.getHours() >= 12 && dt.getHours()<20){
+        else if(dt.getHours() >= 12 && dt.getHours()<16){
             $scope.Message = "Good Afternoon";
+        }
+        else if(dt.getHours() >= 16 && dt.getHours()<20){
+            $scope.Message = "Good Evening";
         }
     }
 

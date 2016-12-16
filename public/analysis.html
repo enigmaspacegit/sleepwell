@@ -1,240 +1,523 @@
-	<div class="row" style="padding : 10px;" ng-controller="AnalysisController">
-	<div class="col-md-12 col-xs-12">
-					<div class="x_panel custom_box_shadow">
-						<div class="x_content">
-							<div class="row">
-								<canvas id="mybarChart3"></canvas>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="x_panel custom_box_shadow">
-					<div class="x_title">
-						<h2>Daily Sleep Analysis <small>in hrs</small></h2>
-						<div class="clearfix"></div>
-					</div>
-					<div class="x_content">
-						<div class="row">
-							<div class="col-md-2 col-xs-3">
-								<label>Select Filter By : </label>
-							</div>
-							<div class="col-md-4 col-xs-9">
-								<select class="form-control" ng-model="filterField" ng-change="updateBar()" ng-options="key as value for (key , value) in rangeOptions">
-								</select>
-							</div>
-							<strong style="line-height: 30px;">{{label_name}}</strong>
-						</div>
-						<div class="row">
-							<div class="col-md-12 col-xs-12" id="myChart">
-								<canvas id="mybarChart"></canvas>
-							</div>
-						</div>
-					</div>
-				</div>
-			<div class="row" style="margin-top:5px;">
-				<div class="col-md-6 col-xs-12">
-					<div class="x_panel custom_box_shadow">
-						<div class="x_content">
-							<div class="row">
-								<canvas id="mybarChart1"></canvas>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-xs-12">
-					<div class="x_panel custom_box_shadow">
-						<div class="x_content">
-							<div class="row">
-								<canvas id="mybarChart2"></canvas>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- <div class="col-md-12 col-xs-12">
-					<div class="x_panel custom_box_shadow">
-						<div class="x_content">
-							<div class="row">
-								<canvas id="mybarChart3"></canvas>
-							</div>
-						</div>
-					</div>
-				</div>	 -->		
-			</div>				
-		</div>
+<style type="text/css">
+.highcharts-credits {
+    display: none;
+}
+</style>
+<script type="text/javascript">
+</script>
+<div class="row" style="padding : 10px;" ng-controller="AnalysisController">
+    <div class="x_panel custom_box_shadow">
+        <div class="x_content">
+            <div class="row">
+                <div id="container1"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:5px;">
+        <div class="col-md-6 col-xs-12">
+            <div class="x_panel custom_box_shadow">
+                <div class="x_content">
+                    <div class="row">
+                        <div id="container2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <div class="x_panel custom_box_shadow">
+                <div class="x_content">
+                    <div class="row">
+                       <div id="container3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="x_panel custom_box_shadow">
+        <div class="x_title">
+            <h2>Daily Sleep Analysis <small>in hrs</small></h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class="row">
+                <div class="col-md-2 col-xs-3">
+                    <label>Select Filter By : </label>
+                </div>
+                <div class="col-md-4 col-xs-9">
+                    <select class="form-control" ng-model="filterField" ng-change="updateBar()" ng-options="key as value for (key , value) in rangeOptions">
+                    </select>
+                </div>
+                <strong style="line-height: 30px;">{{label_name}}</strong>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-xs-12" id="myChart">
+                    <canvas id="mybarChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:5px;">
+        <div class="col-md-6 col-xs-12">
+            <div class="x_panel custom_box_shadow">
+                <div class="x_content">
+                    <div class="row">
+                        <canvas id="mybarChart1"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <div class="x_panel custom_box_shadow">
+                <div class="x_content">
+                    <div class="row">
+                        <canvas id="mybarChart2"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
-	Chart.defaults.global.legend = {
-	enabled: true,
-	};
+Chart.defaults.global.legend = {
+    enabled: true,
+};
 
-	function alertMe($scope) {
-		//var label_name = $('[ng-controller="AnalysisController"]').scope().labels;
-		var label_name = $scope.labels;
-		var data_name = $scope.data;
-		var data_temperature = $scope.dataTemperature;
-		var data_humidity = $scope.dataHumidity;
-		//var data_name = $('[ng-controller="AnalysisController"]').scope().data;
-		//var data_humidity = $('[ng-controller="AnalysisController"]').scope().dataHumidity;
-		//var data_temperature = $('[ng-controller="AnalysisController"]').scope().dataTemperature;
-		$('#mybarChart').remove(); // this is my <canvas> element
-  		$('#myChart').append('<canvas id="mybarChart"><canvas>');
-		var ctx = document.getElementById("mybarChart").getContext('2d');
-		var ctx1 = document.getElementById("mybarChart1").getContext('2d');
-		var ctx2 = document.getElementById("mybarChart2").getContext('2d');
-		var mybarChart = new Chart(ctx, {
-		type: 'line',
+function alertMe($scope) {
+    //var label_name = $('[ng-controller="AnalysisController"]').scope().labels;
+    var label_name = $scope.labels;
+    var data_name = $scope.data;
+    var data_temperature = $scope.dataTemperature;
+    var data_humidity = $scope.dataHumidity;
+    //var data_name = $('[ng-controller="AnalysisController"]').scope().data;
+    //var data_humidity = $('[ng-controller="AnalysisController"]').scope().dataHumidity;
+    //var data_temperature = $('[ng-controller="AnalysisController"]').scope().dataTemperature;
+    $('#mybarChart').remove(); // this is my <canvas> element
+    $('#myChart').append('<canvas id="mybarChart"><canvas>');
+    var ctx = document.getElementById("mybarChart").getContext('2d');
+    var ctx1 = document.getElementById("mybarChart1").getContext('2d');
+    var ctx2 = document.getElementById("mybarChart2").getContext('2d');
+    var mybarChart = new Chart(ctx, {
+        type: 'line',
 
-		data: {
-		  labels:label_name,
-		  datasets: [{
-			label: '# of hours',
-			// backgroundColor: "#16a085",
-			data:data_name
-		  }]
-		},
+        data: {
+            labels: label_name,
+            datasets: [{
+                label: '# of hours',
+                // backgroundColor: "#16a085",
+                data: data_name
+            }]
+        },
 
-		options: {
-		  scales: {
-			yAxes: [{
-			  ticks: {
-				beginAtZero: true
-			  }
-			}]
-		  }
-		}
-		});
-		var mybarChart1 = new Chart(ctx1, {
-		type: 'bar',
-		data: {
-		  labels:label_name,
-		  datasets: [{
-			label: '# of hours',
-			backgroundColor: "#16a085",
-			data:data_humidity
-		  }]
-		},
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    var mybarChart1 = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: label_name,
+            datasets: [{
+                label: '# of hours',
+                backgroundColor: "#16a085",
+                data: data_humidity
+            }]
+        },
 
-		options: {
-		  scales: {
-			yAxes: [{
-			  ticks: {
-				beginAtZero: true
-			  }
-			}]
-		  }
-		}
-		});
-		var mybarChart2 = new Chart(ctx2, {
-		type: 'bar',
-		data: {
-		  labels:label_name,
-		  datasets: [{
-			label: '# of hours',
-			backgroundColor: "#16a085",
-			data:data_temperature
-		  }]
-		},
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    var mybarChart2 = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: label_name,
+            datasets: [{
+                label: '# of hours',
+                backgroundColor: "#16a085",
+                data: data_temperature
+            }]
+        },
 
-		options: {
-		  scales: {
-			yAxes: [{
-			  ticks: {
-				beginAtZero: true
-			  }
-			}]
-		  }
-		}
-		});
-	}
-	var ctx = document.getElementById("mybarChart").getContext('2d');
-	var ctx1 = document.getElementById("mybarChart1").getContext('2d');
-	var ctx2 = document.getElementById("mybarChart2").getContext('2d');
-	var ctx3 = document.getElementById("mybarChart3").getContext('2d');
-	var mybarChart = new Chart(ctx, {
-	type: 'bar',
-	data: {
-	  labels:[],
-	  datasets: [{
-		label: '# of hours',
-		backgroundColor: "#16a085",
-		data: []
-	  }]
-	},
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+}
 
-	options: {
-	  scales: {
-		yAxes: [{
-		  ticks: {
-			beginAtZero: true
-		  }
-		}]
-	  }
-	}
+localStorage.setItem("count" ,1);
+localStorage.setItem("dip",0);
+var ctx = document.getElementById("mybarChart").getContext('2d');
+var ctx1 = document.getElementById("mybarChart1").getContext('2d');
+var ctx2 = document.getElementById("mybarChart2").getContext('2d');
+var mybarChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [],
+        datasets: [{
+            label: '# of hours',
+            backgroundColor: "#16a085",
+            data: []
+        }]
+    },
+
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
 });
 
-	var mybarChart1 = new Chart(ctx1, {
-	type: 'bar',
-	data: {
-	  labels:[],
-	  datasets: [{
-		label: '# of hours',
-		backgroundColor: "#16a085",
-		data: []
-	  }]
-	},
+var mybarChart1 = new Chart(ctx1, {
+    type: 'bar',
+    data: {
+        labels: [],
+        datasets: [{
+            label: '# of hours',
+            backgroundColor: "#16a085",
+            data: []
+        }]
+    },
 
-	options: {
-	  scales: {
-		yAxes: [{
-		  ticks: {
-			beginAtZero: true
-		  }
-		}]
-	  }
-	}
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
 });
 
-	var mybarChart2 = new Chart(ctx2, {
-	type: 'bar',
-	data: {
-	  labels:[],
-	  datasets: [{
-		label: '# of hours',
-		backgroundColor: "#16a085",
-		data: []
-	  }]
-	},
+var mybarChart2 = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        labels: [],
+        datasets: [{
+            label: '# of hours',
+            backgroundColor: "#16a085",
+            data: []
+        }]
+    },
 
-	options: {
-	  scales: {
-		yAxes: [{
-		  ticks: {
-			beginAtZero: true
-		  }
-		}]
-	  }
-	}
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+Highcharts.setOptions({
+    global: {
+        useUTC: false
+    }
 });
 
-var mybarChart3 = new Chart(ctx3, {
-	type: 'bar',
-	data: {
-	  labels:[],
-	  datasets: [{
-		label: '# of hours',
-		backgroundColor: "#16a085",
-		data: []
-	  }]
-	},
+// Highcharts.chart('container', {
+//     chart: {
+//         type: 'spline',
+//         animation: Highcharts.svg, // don't animate in old IE
+//         marginRight: 10,
+//         events: {
+//             load: function() {
 
-	options: {
-	  scales: {
-		yAxes: [{
-		  ticks: {
-			beginAtZero: true
-		  }
-		}]
-	  }
-	}
+//                 // set up the updating of the chart each second
+//                 var series = this.series[0];
+//                 var wsUri = "ws://lightsout.mybluemix.net/ws/chat";
+//                 var ws = new WebSocket(wsUri);
+
+//                 setInterval(function() {
+//                     console.log("Interval expired, refreshing websocket");
+//                     // only closing because the on close method automatically opens a new websocket
+//                     ws.close();
+//                 }, 300000);
+//                 updateWebsocket(ws);
+
+//                 function updateWebsocket(ws) {
+//                     ws.onopen = function(ev) {
+//                         console.log("SOCKET");
+//                     };
+
+//                     ws.onclose = function(ev) {
+//                         console.log("DISCONNECTED");
+//                         window.WebSocket = window.WebSocket || window.MozWebSocket;
+//                         ws = new WebSocket("ws://lightsout.mybluemix.net/ws/chat");
+//                         updateWebsocket(ws);
+//                     }
+
+//                     ws.onmessage = function(ev) {
+//                         var changeData = JSON.parse(ev.data);
+//                         console.log(changeData["payload"]["Ychange"]);
+//                         console.log(changeData["payload"]["ts"]);
+//                         var x = changeData["payload"]["ts"],
+//                             y = changeData["payload"]["Ychange"];
+
+//                         var temp = parseInt(localStorage.getItem("count"));
+//                         if(temp < 20){
+//                         	localStorage.setItem("count" , ++temp);
+//                         	series.addPoint([x, y], true,  false);
+//                         }else{
+//                         	series.addPoint([x, y], true,  true);
+//                         }
+                        
+//                     }
+
+//                 };
+//             }
+//         }
+//     },
+//     title: {
+//         text: 'Gyroscope and Accelerometer'
+//     },
+//     xAxis: {
+//         type: 'datetime',
+//         tickPixelInterval: 150
+//     },
+//     yAxis: {
+//         title: {
+//             text: 'Value'
+//         },
+//         plotLines: [{
+//             value: 0,
+//             width: 1,
+//             color: '#808080'
+//         }]
+//     },
+//     tooltip: {
+//         formatter: function() {
+//             return '<b>' + this.series.name + '</b><br/>' +
+//                 Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+//                 Highcharts.numberFormat(this.y, 2);
+//         }
+//     },
+//     legend: {
+//         enabled: false
+//     },
+//     exporting: {
+//         enabled: false
+//     },
+//     series: [{
+//         name: 'Data',
+//         data: (function() {
+//             // generate an array of random data
+//             var data = [],
+//                 time = (new Date()).getTime(),
+//                 i;
+
+//             for (i = 0; i <= 20; i += 1) {
+//                 data.push({
+//                     x: time + i * 1000
+//                 });
+//             }
+//             return data;
+//         }())
+//     }
+//     ]
+// });
+
+Highcharts.chart('container1', {
+    chart: {
+        type: 'areaspline',
+        animation: Highcharts.svg, // don't animate in old IE
+        marginRight: 10,
+        events: {
+            load: function() {
+
+                // set up the updating of the chart each second
+                var series = this.series[0];
+                var wsUri = "ws://lightsout.mybluemix.net/ws/chat";
+                var ws = new WebSocket(wsUri);
+
+                setInterval(function() {
+                    console.log("Interval expired, refreshing websocket");
+                    // only closing because the on close method automatically opens a new websocket
+                    ws.close();
+                }, 300000);
+                updateWebsocket(ws);
+
+                function updateWebsocket(ws) {
+                    ws.onopen = function(ev) {
+                        console.log("SOCKET");
+                    };
+
+                    ws.onclose = function(ev) {
+                        console.log("DISCONNECTED");
+                        window.WebSocket = window.WebSocket || window.MozWebSocket;
+                        ws = new WebSocket("ws://lightsout.mybluemix.net/ws/chat");
+                        updateWebsocket(ws);
+                    }
+
+                    ws.onmessage = function(ev) {
+                    	var temp = parseInt(localStorage.getItem("dip"));
+                        var changeData = JSON.parse(ev.data);
+                       	series.addPoint([temp,10],true,true);
+                        var x = changeData["payload"]["ts"],
+                            y = changeData["payload"]["Ychange"];
+                        series.addPoint([x, y], true,  true);
+                        localStorage.setItem("dip",x);
+                        
+                    }
+
+                };
+            }
+        }
+    },
+    title: {
+        text: 'Dip'
+    },
+    xAxis: {
+        type: 'linear',
+        tickPixelInterval: 100
+    },
+    yAxis: {
+        title: {
+            text: 'Value'
+        },
+        plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+        }]
+    },
+    tooltip: {
+        formatter: function() {
+            return '<b>' + this.series.name + '</b><br/>' +
+                Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                Highcharts.numberFormat(this.y, 2);
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    exporting: {
+        enabled: false
+    },
+    series: [{
+        name: 'Data',
+        data: (function() {
+            // generate an array of random data
+            var data = [],
+                i;
+
+            for (i = 0; i <= 100; i += 10) {
+                data.push({
+                    x: i,
+                    y : 10
+                });
+            }
+            return data;
+        }())
+    }
+    ]
 });
+Highcharts.chart('container2', {
+    chart: {
+        type: 'spline',
+        animation: Highcharts.svg, // don't animate in old IE
+        marginRight: 10,
+        events: {
+            load: function() {
 
+                // set up the updating of the chart each second
+                var series = this.series[0];
+                var wsUri1 = "ws://lightsout.mybluemix.net/ws/motion";
+                var ws1 = new WebSocket(wsUri1);
+
+                setInterval(function() {
+                    console.log("Interval expired, refreshing websocket");
+                    // only closing because the on close method automatically opens a new websocket
+                    ws1.close();
+                }, 300000);
+                updateWebsocket1(ws1);
+
+                function updateWebsocket1(ws1) {
+                    ws1.onopen = function(ev) {
+                        console.log("SOCKET");
+                    };
+
+                    ws1.onclose = function(ev) {
+                        console.log("DISCONNECTED");
+                        window.WebSocket = window.WebSocket || window.MozWebSocket;
+                        ws1 = new WebSocket("ws://lightsout.mybluemix.net/ws/motion");
+                        updateWebsocket1(ws1);
+                    }
+
+                    ws1.onmessage = function(ev) {
+                        var changeData = JSON.parse(ev.data);
+                        console.log(changeData.Ychange);
+                        var x = changeData.ts,
+                            y = changeData.Ychange;
+                        series.addPoint([x, y], true,  false); 
+                    }
+
+                };
+            }
+        }
+    },
+    title: {
+        text: 'Motion Detection'
+    },
+    xAxis: {
+        type: 'datetime',
+        tickPixelInterval: 150
+    },
+    yAxis: {
+        title: {
+            text: 'Value'
+        },
+        plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+        }]
+    },
+    legend: {
+        enabled: false
+    },
+    exporting: {
+        enabled: false
+    },
+    series: [{
+        name: 'Data',
+        data: (function() {
+            // generate an array of random data
+            var data = [],
+            time = (new Date()).getTime(),
+                i;
+
+            for (i = 0; i <= 20; i += 1) {
+                data.push({
+                    x: time + i * 1000
+                });
+            }
+            return data;
+        }())
+    }
+    ]
+});
 </script>
