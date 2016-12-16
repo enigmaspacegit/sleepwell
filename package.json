@@ -1,17 +1,22 @@
 {
-  "name": "demo",
+  "name": "lightsout",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Virtual Sleeeping Environment",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "",
+  "author": "Team Enigma",
   "license": "ISC",
   "dependencies": {
-    "angular-chart": "^0.5.0",
+    "destroy": "^1.0.4",
     "express": "^4.14.0",
-    "path": "^0.12.7"
+    "http-errors": "^1.5.1",
+    "mime": "^1.3.4",
+    "mime-db": "^1.25.0",
+    "ms": "^0.7.2",
+    "path": "^0.12.7",
+    "statuses": "^1.3.1"
   }
 }
