@@ -8,6 +8,9 @@ mainApp.config(function($routeProvider) {
         .when('/analysis', {
             templateUrl: 'analysis.html',
         })
+        .when('/status',{
+            templateUrl: 'status.html',
+        })
         .when('/home', {
             templateUrl: 'UI.html',
         })

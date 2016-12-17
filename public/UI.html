@@ -332,7 +332,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group slider3">
+                            <div class="form-group slider3" ng-show="!checkbox_servo">
                                 <label class="control-label col-md-6 col-sm-6 col-xs-6" style="text-align: right;">
                                     CLOSE
                                 </label>
@@ -468,12 +468,7 @@ $(document).ready(function() {
 $(document).ready(function() {
     // var clickCheckbox1 = document.querySelector('#switch1');
     // var clickCheckbox2 = document.querySelector('#switch2');
-    var clickCheckbox3 = document.querySelector('#switch3');
-    if (clickCheckbox3.checked) {
-            $(".slider3").css("display", "none");
-        } else {
-            $(".slider3").css("display", "block");
-        };
+    // var clickCheckbox3 = document.querySelector('#switch3');
     // var clickCheckbox4 = document.querySelector('#switch4');
     // $("#switch1").click(function() {
     //     if (clickCheckbox1.checked) {
@@ -489,13 +484,13 @@ $(document).ready(function() {
     //         $(".slider2").css("display", "block");
     //     }
     // });
-    $("#switch3").click(function() {
-        if (clickCheckbox3.checked) {
-            $(".slider3").css("display", "none");
-        } else {
-            $(".slider3").css("display", "block");
-        }
-    });
+    // $("#switch3").click(function() {
+    //     if (clickCheckbox3.checked) {
+    //         $(".slider3").css("display", "none");
+    //     } else {
+    //         $(".slider3").css("display", "block");
+    //     }
+    // });
     // $("#switch4").click(function() {
     //     if (clickCheckbox4.checked) {
     //         $(".slider4").css("display", "none");

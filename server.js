@@ -8,5 +8,10 @@ app.get('/',function(req,res){
 	res.send("Sever is running ....!");
 });
 
+app.get('/analysis.html',function(req,res){
+	res.sendFile(path.join(__dirname + "analysis.html"));
+});
+
+
 app.listen(3000);	
 console.log("Listening on 3000 port");

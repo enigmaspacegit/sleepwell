@@ -14,20 +14,11 @@
         </div>
     </div>
     <div class="row" style="margin-top:5px;">
-        <div class="col-md-6 col-xs-12">
+        <div class="col-md-12 col-xs-12">
             <div class="x_panel custom_box_shadow">
                 <div class="x_content">
                     <div class="row">
                         <div id="container2"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xs-12">
-            <div class="x_panel custom_box_shadow">
-                <div class="x_content">
-                    <div class="row">
-                       <div id="container3"></div>
                     </div>
                 </div>
             </div>
@@ -163,7 +154,8 @@ function alertMe($scope) {
 }
 
 localStorage.setItem("count" ,1);
-localStorage.setItem("dip",0);
+localStorage.setItem("dip1",0);
+localStorage.setItem("dip2",0);
 var ctx = document.getElementById("mybarChart").getContext('2d');
 var ctx1 = document.getElementById("mybarChart1").getContext('2d');
 var ctx2 = document.getElementById("mybarChart2").getContext('2d');
@@ -373,14 +365,21 @@ Highcharts.chart('container1', {
                     }
 
                     ws.onmessage = function(ev) {
-                    	var temp = parseInt(localStorage.getItem("dip"));
+                    	var temp1 = parseInt(localStorage.getItem("dip1"));
+                        var temp2 = parseInt(localStorage.getItem("dip2"));
                         var changeData = JSON.parse(ev.data);
-                       	series.addPoint([85,10],true,false);
-                        var x = changeData["payload"]["ts"],
-                            y = 10-Math.abs(changeData["payload"]["Ychange"]);
-
-                        series.addPoint([x, y], true,  false);
-                        localStorage.setItem("dip",x);
+                       	series.addPoint([temp1,10],true,false);
+                        series.addPoint([temp2,10],true,false);
+                        console.log(changeData);
+                        var x1 = changeData.ts1,
+                            y1 = 10-Math.abs(changeData.Ychange1);
+                        var x2 = changeData.ts2,
+                            y2 = 10-Math.abs(changeData.Ychange2);
+                            console.log(x1+" "+y1+" "+x2+" "+y2);
+                        series.addPoint([x1, y1], true,  false);
+                        series.addPoint([x2, y2], true,  false);
+                        localStorage.setItem("dip1",x1);
+                        localStorage.setItem("dip2",x2);
                         
                     }
 
@@ -397,7 +396,7 @@ Highcharts.chart('container1', {
     },
     yAxis: {
         title: {
-            text: 'Side View of The Bed'
+            text: 'Value'
         },
         plotLines: [{
             value: 0,
