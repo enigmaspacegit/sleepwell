@@ -375,10 +375,11 @@ Highcharts.chart('container1', {
                     ws.onmessage = function(ev) {
                     	var temp = parseInt(localStorage.getItem("dip"));
                         var changeData = JSON.parse(ev.data);
-                       	series.addPoint([temp,10],true,true);
+                       	series.addPoint([85,10],true,false);
                         var x = changeData["payload"]["ts"],
-                            y = changeData["payload"]["Ychange"];
-                        series.addPoint([x, y], true,  true);
+                            y = 10-Math.abs(changeData["payload"]["Ychange"]);
+
+                        series.addPoint([x, y], true,  false);
                         localStorage.setItem("dip",x);
                         
                     }
@@ -396,7 +397,7 @@ Highcharts.chart('container1', {
     },
     yAxis: {
         title: {
-            text: 'Value'
+            text: 'Side View of The Bed'
         },
         plotLines: [{
             value: 0,
